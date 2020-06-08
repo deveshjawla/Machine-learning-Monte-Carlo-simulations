@@ -60,8 +60,6 @@ function correlations(L::Int64,lattice::Array{Int64,3})::Array{Float64,2}
 					correlation+=lattice[i,j,k]*lattice[mod1(i+p,L),mod1(j+q,L),mod1(k+r,L)]
 				end
 				correlation/=float(L*L*L)
-			end
-			if count>=1
 				correlations_list[count,1]=dist
 				correlations_list[count,2]=correlation
 			end
@@ -72,12 +70,10 @@ function correlations(L::Int64,lattice::Array{Int64,3})::Array{Float64,2}
 			dist=distance(p,q,r)
 			if dist>=1.0
 				count+=1
-				for i=1:L/2,j=1:L/2,k=1:L/2
+				for i=1:Int(L/2),j=1:Int(L/2),k=1:Int(L/2)
 					correlation+=lattice[i,j,k]*lattice[mod1(i+p,L),mod1(j+q,L),mod1(k+r,L)]
 				end
 				correlation/=float(L*L*L)
-			end
-			if count>=1
 				correlations_list[count,1]=dist
 				correlations_list[count,2]=correlation
 			end
@@ -97,8 +93,6 @@ function correlations(L::Int64,lattice::Array{Int64,3})::Array{Float64,2}
 					correlation=lattice[i,j,k]*lattice[mod1(i+p,L),mod1(j+q,L),mod1(k+r,L)]
 				end
 				correlation/=float(L*L*L)
-			end
-			if count>=1
 				correlations_list[count,1]=dist
 				correlations_list[count,2]=correlation
 			end
@@ -220,6 +214,9 @@ function continue_or_not(L::Int64,kappa::Float64,T::Float64,sweeps::Int64,lattic
 	array=reshape(array,length(array))
 	sweeps=length(array)
 	tau=autocorrelation(array)
+	open("/scratch/fermi/jawla/Ongoing/clustering_data_L=$(L)/kappa=$(kappa)_T=$(T)/tau.txt","w") do f
+		write(f,"$(tau)")
+	end
 	if 25*tau<=sweeps
 		mkpath("/scratch/fermi/jawla/Data/clustering_data_L=$(L)/kappa=$(kappa)_T=$(T)")
 		mv("/scratch/fermi/jawla/Ongoing/clustering_data_L=$(L)/kappa=$(kappa)_T=$(T)","/scratch/fermi/jawla/Data/clustering_data_L=$(L)/kappa=$(kappa)_T=$(T)",force=true)
@@ -286,6 +283,9 @@ function continue_dnn_or_not(L::Int64,kappa::Float64,T::Float64,sweeps::Int64,la
 	array=reshape(array,length(array))
 	sweeps=length(array)
 	tau=autocorrelation(array)
+	open("/scratch/fermi/jawla/Ongoing/dnn_data_L=$(L)/kappa=$(kappa)_T=$(T)/tau.txt","w") do f
+		write(f,"$(tau)")
+	end
 	if 25*tau<=sweeps
 		mkpath("/scratch/fermi/jawla/Data/dnn_data_L=$(L)/kappa=$(kappa)_T=$(T)")
 		mv("/scratch/fermi/jawla/Ongoing/dnn_data_L=$(L)/kappa=$(kappa)_T=$(T)","/scratch/fermi/jawla/Data/dnn_data_L=$(L)/kappa=$(kappa)_T=$(T)",force=true)
