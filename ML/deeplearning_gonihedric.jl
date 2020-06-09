@@ -48,7 +48,7 @@ end
 function get_test_data(args)
     # Loading Dataset
     df=CSV.read("/home/jawla/jobs/DNN_gonihedric_test.csv")
-    x=permutedims(Matrix(select(df, Not([:phase,:temperature,:energy,:autocorrelation]))))
+    x=permutedims(Matrix(select(df, Not([:temperature]))))
     temps=permutedims(Matrix(select(df,:temperature)))
     return x,temps
 end
