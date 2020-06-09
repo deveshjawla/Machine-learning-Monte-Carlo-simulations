@@ -192,10 +192,10 @@ function phases_simulation(L::Int64,kappa::Float64,T::Float64,sweeps::Int64)
 				lattice_1=metropolis_step(L,kappa,T,lattice)
 				lattice=lattice_1
 			end
-			corr_list=correlations(L,lattice)
 			energy=calc_energy(L,kappa,lattice)
 			write(f,"$(energy)\n")
 			if i>= 20000 && i%1000==0
+				corr_list=correlations(L,lattice)
 				writedlm("/scratch/fermi/jawla/Ongoing/clustering_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=$(i).txt", corr_list, ',')
 			end
 		end
@@ -231,10 +231,10 @@ function continue_phases_simulation(L::Int64,kappa::Float64,T::Float64,extra_swe
 				lattice_1=metropolis_step(L,kappa,T,lattice)
 				lattice=lattice_1
 			end
-			corr_list=correlations(L,lattice)
 			energy=calc_energy(L,kappa,lattice)
 			write(f,"$(energy)\n")
 			if i>= 20000 && i%1000==0
+				corr_list=correlations(L,lattice)
 				writedlm("/scratch/fermi/jawla/Ongoing/clustering_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=$(i).txt", corr_list, ',')
 			end
 		end
@@ -254,10 +254,10 @@ function dnn_simulation(L::Int64,kappa::Float64,T::Float64,sweeps::Int64)
 				lattice_1=metropolis_step(L,kappa,T,lattice)
 				lattice=lattice_1
 			end
-			corr_list=correlations(L,lattice)
 			energy=calc_energy(L,kappa,lattice)
 			write(f,"$(energy)\n")
 			if i>= 20000 && i%1000==0
+				corr_list=correlations(L,lattice)
 				writedlm("/scratch/fermi/jawla/Ongoing/dnn_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=$(i).txt", corr_list, ',')
 			end
 		end
@@ -292,10 +292,10 @@ function continue_dnn_simulation(L::Int64,kappa::Float64,T::Float64,extra_sweeps
 				lattice_1=metropolis_step(L,kappa,T,lattice)
 				lattice=lattice_1
 			end
-			corr_list=correlations(L,lattice)
 			energy=calc_energy(L,kappa,lattice)
 			write(f,"$(energy)\n")
 			if i>= 20000 && i%1000==0
+				corr_list=correlations(L,lattice)
 				writedlm("/scratch/fermi/jawla/Ongoing/dnn_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=$(i).txt", corr_list, ',')
 			end
 		end
