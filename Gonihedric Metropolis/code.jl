@@ -9,6 +9,7 @@ using Random
 using Statistics
 using LsqFit
 using CSV
+using DelimitedFiles
 
 function distance(p,q,r)::Float64
 	return sqrt(p^2+q^2+r^2)
@@ -195,11 +196,7 @@ function phases_simulation(L::Int64,kappa::Float64,T::Float64,sweeps::Int64)
 			energy=calc_energy(L,kappa,lattice)
 			write(f,"$(energy)\n")
 			if i>= 20000 && i%1000==0
-				open("/scratch/fermi/jawla/Ongoing/clustering_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=$(i).txt", "w") do io
-					for i in eachrow(corr_list)
-						write(io,"$(i)\n")
-					end
-				end
+				writedlm("/scratch/fermi/jawla/Ongoing/clustering_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=$(i).txt", corr_list, ',')
 			end
 		end
 	end
@@ -238,11 +235,7 @@ function continue_phases_simulation(L::Int64,kappa::Float64,T::Float64,extra_swe
 			energy=calc_energy(L,kappa,lattice)
 			write(f,"$(energy)\n")
 			if i>= 20000 && i%1000==0
-				open("/scratch/fermi/jawla/Ongoing/clustering_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=$(i).txt", "w") do io
-					for i in eachrow(corr_list)
-						write(io,"$(i)\n")
-					end
-				end
+				writedlm("/scratch/fermi/jawla/Ongoing/clustering_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=$(i).txt", corr_list, ',')
 			end
 		end
 	end
@@ -265,11 +258,7 @@ function dnn_simulation(L::Int64,kappa::Float64,T::Float64,sweeps::Int64)
 			energy=calc_energy(L,kappa,lattice)
 			write(f,"$(energy)\n")
 			if i>= 20000 && i%1000==0
-				open("/scratch/fermi/jawla/Ongoing/dnn_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=$(i).txt", "w") do io
-					for i in eachrow(corr_list)
-						write(io,"$(i)\n")
-					end
-				end
+				writedlm("/scratch/fermi/jawla/Ongoing/dnn_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=$(i).txt", corr_list, ',')
 			end
 		end
 	end
@@ -307,11 +296,7 @@ function continue_dnn_simulation(L::Int64,kappa::Float64,T::Float64,extra_sweeps
 			energy=calc_energy(L,kappa,lattice)
 			write(f,"$(energy)\n")
 			if i>= 20000 && i%1000==0
-				open("/scratch/fermi/jawla/Ongoing/dnn_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=$(i).txt", "w") do io
-					for i in eachrow(corr_list)
-						write(io,"$(i)\n")
-					end
-				end
+				writedlm("/scratch/fermi/jawla/Ongoing/dnn_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=$(i).txt", corr_list, ',')
 			end
 		end
 	end
