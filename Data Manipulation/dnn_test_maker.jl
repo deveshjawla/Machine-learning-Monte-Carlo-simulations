@@ -4,7 +4,7 @@ function data_maker()
 z=readdlm("/home/jawla/Simulations/done_list.txt")
 corr_data=DataFrame()
 for i in length(z)
-    L=z[i][1]
+    L=Int(z[i][1])
 	kappa=z[i][2]
 	T=z[i][3]
 	df=CSV.read("/scratch/fermi/jawla/Data/dnn_data_L=$(L)/kappa=$(kappa)_T=$(T)/sweep_data/sweep=3000000.txt",header=false)
