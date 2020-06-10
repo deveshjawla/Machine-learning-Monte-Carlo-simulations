@@ -1,6 +1,6 @@
 using CSV, DataFrames
 using DelimitedFiles
-
+function data_maker()
 z=readdlm("/home/jawla/Simulations/done_list.txt")
 corr_data=DataFrame()
 for i in length(z)
@@ -15,3 +15,5 @@ for i in length(z)
 	corr_data=r
 end
 CSV.write("/home/jawla/Simulations/DNN_gonihedric_test.csv",corr_data)
+end
+data_maker()
