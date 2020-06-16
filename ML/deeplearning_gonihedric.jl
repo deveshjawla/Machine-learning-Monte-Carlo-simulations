@@ -6,7 +6,7 @@ using Base.Iterators: repeated
 using Parameters: @with_kw
 using CUDAapi
 using Printf, BSON
-using CSV
+using Random
 using DelimitedFiles
 if has_cuda()
     @info "CUDA is on"
@@ -25,21 +25,20 @@ end
 
 function getdata(args)
     # Loading Dataset
-    df=CSV.read("/home/jawla/Simulations/DNN_gonihedric_data.csv")
-    len=size(df, 1)
+    df=readdlm("/home/jawla/Simulations/DNN_gonihedric_data.csv",',',Float64)
     split_boundary=ceil(Int64,0.9*len)
     df=df[shuffle(1:len),:]
     train=df[1:split_boundary,:]
     validate=df[split_boundary+1:len,:]
-    x_train=permutedims(Matrix(select(train, Not([:phase,:temperature,:energy,:autocorrelation]))))
-    y_train=permutedims(Matrix(select(train,:phase)))
+    x_train=permutedims(train[:,1:518])
+    y_train=permutedims(Matrix{Int64}(train[:,522]))
     # One-hot-encode the labels
     y_train= onehotbatch(y_train, 0:1)#make onehotbatch of lables, essentially columns of labels
     # Batching
     train_data = DataLoader(x_train, y_train, batch_size=args.batch_size)#makes an array of tuples(batches) where each batch is a matrix with columsn as samples, and rows as features
 
-    x_validate=permutedims(Matrix(select(validate, Not([:phase,:temperature,:energy,:autocorrelation]))))
-    y_validate=permutedims(Matrix(select(validate,:phase)))
+    x_validate=permutedims(Matrix{Float64}(select(validate, Not([519,520,521,522]))))
+    y_validate=permutedims(Matrix{Int64}(select(validate,522)))
     y_validate= onehotbatch(validate, 0:1)
     validate_data = DataLoader(x_validate, y_validate, batch_size=args.batch_size)#
     return train_data,validate_data
@@ -47,9 +46,9 @@ end
 
 function get_test_data(args)
     # Loading Dataset
-    df=CSV.read("/home/jawla/jobs/DNN_gonihedric_test.csv")
-    x=permutedims(Matrix(select(df, Not([:temperature]))))
-    temps=permutedims(Matrix(select(df,:temperature)))
+    df=readdlm("/home/jawla/jobs/DNN_gonihedric_test.csv",',',Float64)
+    x=permutedims(df[:,1:518])
+    temps=permutedims(df[:,519])
     return x,temps
 end
 
