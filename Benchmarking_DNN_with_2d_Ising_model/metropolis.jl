@@ -1,6 +1,6 @@
 using Distributed
 using ClusterManagers
-addprocs(SlurmManager(100))
+addprocs(SlurmManager(2))
 @everywhere begin
 using Pkg
 Pkg.instantiate()
