@@ -48,7 +48,7 @@ end
 
 function correlations(L::Int64,lattice::Array{Int64,3})::Array{Float64,2}
 	if L%2==0
-		even_dim=convert(Int64,((L/2)^3+6))
+		even_dim=convert(Int64,(((L/2)^3-1)+( ((L/2)+1)^2 + ((L/2)+1)*(L/2) + (L/2)^2 )))
 		correlations_list=zeros(Float64,even_dim,2)
 		count=0
 		for p=0:convert(Int64,((L/2)-1)),q=0:convert(Int64,((L/2)-1)),r=0:convert(Int64,((L/2)-1))
@@ -65,7 +65,35 @@ function correlations(L::Int64,lattice::Array{Int64,3})::Array{Float64,2}
 				correlations_list[count,2]=correlation
 			end
 		end
-		for p=[0,convert(Int64,L/2)],q=[0,convert(Int64,L/2)],r=[0,convert(Int64,L/2)]
+		for p=convert(Int64,L/2),q=0:convert(Int64,L/2),r=0:convert(Int64,L/2)
+			dist=0
+			correlation=0
+			dist=distance(p,q,r)
+			if dist>=1.0
+				count+=1
+				for i=1:Int(L/2),j=1:Int(L/2),k=1:Int(L/2)
+					correlation+=lattice[i,j,k]*lattice[mod1(i+p,L),mod1(j+q,L),mod1(k+r,L)]
+				end
+				correlation/=float(L*L*L)
+				correlations_list[count,1]=dist
+				correlations_list[count,2]=correlation
+			end
+		end
+		for p=0:convert(Int64,L/2-1),q=convert(Int64,L/2),r=0:convert(Int64,L/2)
+			dist=0
+			correlation=0
+			dist=distance(p,q,r)
+			if dist>=1.0
+				count+=1
+				for i=1:Int(L/2),j=1:Int(L/2),k=1:Int(L/2)
+					correlation+=lattice[i,j,k]*lattice[mod1(i+p,L),mod1(j+q,L),mod1(k+r,L)]
+				end
+				correlation/=float(L*L*L)
+				correlations_list[count,1]=dist
+				correlations_list[count,2]=correlation
+			end
+		end
+		for p=0:convert(Int64,L/2-1),q=0:convert(Int64,L/2-1),r=convert(Int64,L/2)
 			dist=0
 			correlation=0
 			dist=distance(p,q,r)
